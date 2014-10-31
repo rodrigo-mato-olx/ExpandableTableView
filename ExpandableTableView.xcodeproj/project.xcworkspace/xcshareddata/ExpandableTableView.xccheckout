@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>7A0C08EB-7BBF-4E69-BE4C-D93617C88EA6</string>
+	<key>IDESourceControlProjectName</key>
+	<string>ExpandableTableView</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>DF721211C9101743EA07770A271731FEAC97351A</key>
+		<string>https://github.com/rodrigo-mato-olx/ExpandableTableView.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>ExpandableTableView.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>DF721211C9101743EA07770A271731FEAC97351A</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/rodrigo-mato-olx/ExpandableTableView.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>DF721211C9101743EA07770A271731FEAC97351A</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>DF721211C9101743EA07770A271731FEAC97351A</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ExpandableTableView</string>
+		</dict>
+	</array>
+</dict>
+</plist>
