@@ -13,7 +13,12 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 - (void)initExpansionStates;
+
+- (void)expandRow:(NSIndexPath*)indexPath;
+- (void)collapseExpandedRow:(NSIndexPath*)indexPath;
+- (void)collapseAllRows;
 - (BOOL)isExpansionRow:(NSIndexPath*)indexPath;
+
 - (NSIndexPath*)absoluteIndexPathFromRelativeIndexPath:(NSIndexPath*)indexPath;
 - (NSInteger)numberOfFixedRowsInSection:(NSInteger)section;
 - (NSInteger)numberOfSections;

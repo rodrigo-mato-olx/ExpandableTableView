@@ -53,6 +53,11 @@
 #pragma mark - Expanded TableView
 /////////////////////////////////////////////////////////////////////////////////////////
 
+- (void)expandRow:(NSIndexPath*)indexPath {
+    
+    NSIndexPath* absolutePath = [self absoluteIndexPathFromRelativeIndexPath:indexPath];
+    [self expandRow:indexPath withAbsolutePath:absolutePath];
+}
 
 - (void)expandRow:(NSIndexPath*)indexPath withAbsolutePath:(NSIndexPath*)absolutePath{
     
@@ -65,6 +70,12 @@
     [self.tableView beginUpdates];
     [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:newPosition inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationBottom];
     [self.tableView endUpdates];
+}
+
+- (void)collapseExpandedRow:(NSIndexPath*)indexPath {
+    
+    NSIndexPath* absolutePath = [self absoluteIndexPathFromRelativeIndexPath:indexPath];
+    [self collapseExpandedRow:indexPath withAbsolutePath:absolutePath];
 }
 
 - (void)collapseExpandedRow:(NSIndexPath*)indexPath withAbsolutePath:(NSIndexPath*)absolutePath{
