@@ -10,7 +10,8 @@
 
 @interface ExpandableTableController ()
 
-@property (nonatomic, strong) NSMutableArray* expansionStates;
+@property (nonatomic, strong) NSMutableArray*   expansionStates;
+@property (nonatomic, strong) NSIndexPath*      lastInsertedPath;
 
 @end
 
@@ -27,13 +28,15 @@
 //}
 
 - (void)viewDidLoad {
-    
     [super viewDidLoad];
+    self.justOneRowExpanded = YES;
 }
 
 - (void)initExpansionStates {
     
     self.expansionStates = [NSMutableArray new];
+    self.lastInsertedPath = nil;
+    
     NSInteger sectionsCount = [self numberOfSections];
     NSInteger rowsCount;
     
@@ -62,14 +65,19 @@
 - (void)expandRow:(NSIndexPath*)indexPath withAbsolutePath:(NSIndexPath*)absolutePath{
     
     NSUInteger newPosition = indexPath.row + 1;
+
     // Add expanded row to data model
     NSMutableArray* sectionExpansionRows = self.expansionStates[indexPath.section];
     [sectionExpansionRows replaceObjectAtIndex:absolutePath.row withObject:@YES];
     
     // Insert row in tableview
+    NSIndexPath* newIndexPath = [NSIndexPath indexPathForRow:newPosition inSection:indexPath.section];
     [self.tableView beginUpdates];
-    [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:newPosition inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationBottom];
+    [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationBottom];
     [self.tableView endUpdates];
+    
+    // Scroll the tableview to get the new row visible
+    [self.tableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 
 - (void)collapseExpandedRow:(NSIndexPath*)indexPath {
@@ -81,6 +89,7 @@
 - (void)collapseExpandedRow:(NSIndexPath*)indexPath withAbsolutePath:(NSIndexPath*)absolutePath{
     
     NSIndexPath* collapsingIndexPath = [NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section];
+    
     // Remove expanded row from data model
     NSMutableArray* sectionExpansionRows = self.expansionStates[indexPath.section];
     [sectionExpansionRows replaceObjectAtIndex:absolutePath.row withObject:@NO];
@@ -89,6 +98,9 @@
     [self.tableView beginUpdates];
     [self.tableView deleteRowsAtIndexPaths:@[collapsingIndexPath] withRowAnimation:UITableViewRowAnimationBottom];
     [self.tableView endUpdates];
+    
+    // Scroll the table view to a bvisible position
+    [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
 }
 
 /*
@@ -175,9 +187,11 @@
 }
 
 /*
- ** Collapse all expanded rows
+ ** Collapse all expanded rows, and returns the last collapsed indexpath
  */
-- (void)collapseAllRows {
+- (NSIndexPath*)collapseAllRows {
+    
+    NSIndexPath* collapsePath = nil;
     
     // Iterate all Sections
     for (int i=0; i < [self.expansionStates count]; i++) {
@@ -187,13 +201,17 @@
         // Iterate all rows
         for (int j=0; j < [sectionStates count]; j++) {
             
+            if (self.justOneRowExpanded && self.lastInsertedPath.row == j && self.lastInsertedPath.section == i)
+                continue;
+            
             // If row is expanded collapse it
-            if ( [sectionStates[j] boolValue] ) {
-                NSIndexPath* rowPath = [NSIndexPath indexPathForRow:j inSection:i];
-                [self collapseExpandedRow:rowPath withAbsolutePath:rowPath];
+            if ( [sectionStates[j] boolValue]) {
+                collapsePath = [NSIndexPath indexPathForRow:j inSection:i];
+                [self collapseExpandedRow:collapsePath withAbsolutePath:collapsePath];
             }
         }
     }
+    return collapsePath;
 }
 
 
@@ -242,8 +260,25 @@
             
             if ( [self rowIsExpanded:absolutePath] )
                 [self collapseExpandedRow:indexPath withAbsolutePath:absolutePath];
-            else
+           
+            else {
+                
+                // Save previous and current insertion
+                NSIndexPath* previousInsertedPath;
+                if (self.lastInsertedPath)
+                    previousInsertedPath = [NSIndexPath indexPathForRow:self.lastInsertedPath.row+1 inSection:self.lastInsertedPath.section];
+                self.lastInsertedPath = absolutePath;
+                
+                // Expand current Row
                 [self expandRow:indexPath withAbsolutePath:absolutePath];
+                
+                // Collapse rows if appropriate
+                if (self.justOneRowExpanded){
+                    [self collapseAllRows];
+                    if (previousInsertedPath && previousInsertedPath.section == self.lastInsertedPath.section)
+                        [self.tableView reloadRowsAtIndexPaths:@[previousInsertedPath] withRowAnimation:UITableViewRowAnimationFade];
+                }
+            }
         }
     }
 }

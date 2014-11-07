@@ -11,13 +11,14 @@
 @interface ExpandableTableController : UIViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UITextViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (nonatomic) BOOL justOneRowExpanded;
 
 - (void)initExpansionStates;
 
 - (void)expandRow:(NSIndexPath*)indexPath;
 - (void)collapseExpandedRow:(NSIndexPath*)indexPath;
-- (void)collapseAllRows;
 - (BOOL)isExpansionRow:(NSIndexPath*)indexPath;
+- (NSIndexPath*)collapseAllRows;
 
 - (NSIndexPath*)absoluteIndexPathFromRelativeIndexPath:(NSIndexPath*)indexPath;
 - (NSInteger)numberOfFixedRowsInSection:(NSInteger)section;
