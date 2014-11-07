@@ -163,6 +163,28 @@
     return expandedRows;
 }
 
+/*
+ ** Collapse all expanded rows
+ */
+- (void)collapseAllRows {
+    
+    // Iterate all Sections
+    for (int i=0; i < [self.expansionStates count]; i++) {
+        
+        NSMutableArray* sectionStates = self.expansionStates[i];
+        
+        // Iterate all rows
+        for (int j=0; j < [sectionStates count]; j++) {
+            
+            // If row is expanded collapse it
+            if ( [sectionStates[j] boolValue] ) {
+                NSIndexPath* rowPath = [NSIndexPath indexPathForRow:j inSection:i];
+                [self collapseExpandedRow:rowPath withAbsolutePath:rowPath];
+            }
+        }
+    }
+}
+
 
 /////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Override Class Methods
