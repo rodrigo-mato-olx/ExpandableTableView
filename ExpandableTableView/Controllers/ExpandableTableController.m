@@ -22,7 +22,7 @@
     self = [super init];
     if (self){
         self.justOneRowExpanded = NO;
-        self.scrollExpandedRowToVisible = YES;
+        self.scrollExpandedRowToVisible = NO;
     }
     return self;
 }
