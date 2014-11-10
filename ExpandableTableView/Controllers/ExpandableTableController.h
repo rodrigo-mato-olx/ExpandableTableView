@@ -12,9 +12,9 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic) BOOL justOneRowExpanded;
+@property (nonatomic) BOOL scrollExpandedRowToVisible;
 
 - (void)initExpansionStates;
-
 - (void)expandRow:(NSIndexPath*)indexPath;
 - (void)collapseExpandedRow:(NSIndexPath*)indexPath;
 - (BOOL)isExpansionRow:(NSIndexPath*)indexPath;
