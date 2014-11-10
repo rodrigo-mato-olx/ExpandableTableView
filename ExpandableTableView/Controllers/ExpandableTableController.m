@@ -17,19 +17,18 @@
 
 @implementation ExpandableTableController
 
-//- (id)initWithCoder:(NSCoder *)aDecoder {
-//{
-//    self = [super init];
-//    if (self)
-//    {
-//        // Custom initialization
-//    }
-//    return self;
-//}
+
+- (id)init {
+    self = [super init];
+    if (self){
+        self.justOneRowExpanded = NO;
+        self.scrollExpandedRowToVisible = YES;
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.justOneRowExpanded = YES;
 }
 
 - (void)initExpansionStates {
@@ -77,7 +76,8 @@
     [self.tableView endUpdates];
     
     // Scroll the tableview to get the new row visible
-    [self.tableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    if (self.scrollExpandedRowToVisible)
+        [self.tableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 
 - (void)collapseExpandedRow:(NSIndexPath*)indexPath {
@@ -99,8 +99,9 @@
     [self.tableView deleteRowsAtIndexPaths:@[collapsingIndexPath] withRowAnimation:UITableViewRowAnimationBottom];
     [self.tableView endUpdates];
     
-    // Scroll the table view to a bvisible position
-    [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+    // Scroll the table view to a visible position
+    if (self.scrollExpandedRowToVisible)
+        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
 }
 
 /*
